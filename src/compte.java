@@ -72,4 +72,5 @@ public class compte {
     public void setNumcompte(int numcompte) {
         this.numcompte = numcompte;
     }
+
 }
