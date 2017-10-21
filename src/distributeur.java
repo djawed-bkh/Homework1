@@ -11,18 +11,21 @@ public class distributeur {
             int j=1;
             int r=51;
             int m=500;
-            clients.add(new compte(20000+m,500000-m,0+i,clients.size()-1,"bkh","djawed"+j));
-            clients.add(new compte(500000-m,10+i,r,"hb"+j,"gjk"+j));
+            clients.add(new compte(20000+m,500000-m,i,i,"bkh","djawed"+j));
+            clients.add(new compte(500000-m,i,i,"hb"+j,"gjk"+j));
+            clients.add(new compte(500000-m,i,i,"hb"+j,"gjk"+j));
             r++;
         }
         }
 
     public void menu() {
+        int repeat=0;
         creationclient();
         System.out.println("bonjour bienvenu dans le distributeur automatique ");
         System.out.println("veillez vous connecter a votre compte");
          temp=authentifier();
         if (temp>=0){
+            while (repeat==0){
             System.out.println("menu: ");
             System.out.println(" 1) afficher les details du compte ");
             System.out.println("  2) verser  une somme ");
@@ -30,12 +33,14 @@ public class distributeur {
             System.out.println("    4) virer une somme  ");
             int choix=sc.nextInt();
             switch (choix){
-                case 1:affichedet(temp);break;
+                case 1:affichedet();break;
                 case 2:verser();break;
                 case 3:retirer();break;
                 case 4:virer();break;
             }
-        }
+                System.out.println("voulez vous continuer ? oui (0) non(1)");
+            repeat=sc.nextInt();
+        }}
 
 
 
@@ -44,6 +49,7 @@ public class distributeur {
         int i=0;
         System.out.println("tappez votre numero de compte ");
         int ncompte=sc.nextInt();
+        System.out.println(clients.get(ncompte).getCode());
         if (ncompte>=0 && ncompte<clients.size()){
             System.out.println("tappez votre code");
             int code=sc.nextInt();
@@ -63,19 +69,30 @@ public class distributeur {
 
     public void retirer(){
         int reste;
-        if (temp<51){System.out.println("de quel compte voulez vous retirer 1 euro    2 $");
+        affichedet();
+        if (temp<51){
+            System.out.println("de quel compte voulez vous retirer 1 euro    2 $");
             int  choix=sc.nextInt();
             if (choix==1){
                 System.out.println("quelle somme voulez vous retirer ?");
                 int somme=sc.nextInt();
                 reste=clients.get(temp).getEuro()-somme;
                 clients.get(temp).setEuro(reste);
+                System.out.println("votre compte euro contient "+clients.get(temp).getEuro());
             }else if (choix==2){
                 System.out.println("quelle somme voulez vous retirer ?");
                 int somme=sc.nextInt();
                 reste=clients.get(temp).getDollar()-somme;
                 clients.get(temp).setDollar(reste);
+                System.out.println("votre compte dollar contient "+clients.get(temp).getEuro());
             }else System.out.println("tappez 1 ou 2 !!");
+        }else if(temp>100){
+            System.out.println("quelle somme voulez vous retirer ?");
+            int somme=sc.nextInt();
+            reste=clients.get(temp).getEuro()-somme;
+            clients.get(temp).setEuro(reste);
+            System.out.println("votre compte dollar contient "+clients.get(temp).getDollar());
+
         }else{
             System.out.println("quelle somme voulez vous retirer ?");
             int somme=sc.nextInt();
@@ -87,7 +104,9 @@ public class distributeur {
 
     }
     public void verser(){
+        affichedet();
         int reste;
+        if (temp<51){
         System.out.println("de quel compte voulez vous verser 1 euro    2 $");
         int  choix=sc.nextInt();
         if (choix==1){
@@ -95,15 +114,25 @@ public class distributeur {
             int somme=sc.nextInt();
             reste=clients.get(temp).getEuro()+somme;
             clients.get(temp).setEuro(reste);
+            System.out.println("votre compte euro contient "+clients.get(temp).getEuro());
         }else if (choix==2){
             System.out.println("quelle somme voulez vous verser ?");
             int somme=sc.nextInt();
             reste=clients.get(temp).getDollar()+somme;
             clients.get(temp).setDollar(reste);
         }else System.out.println("tappez 1 ou 2 !!");
-        System.out.println("votre compte euro contient "+clients.get(temp).getEuro());
+        System.out.println("votre compte dollar contient "+clients.get(temp).getDollar()); }
+    else {
+            System.out.println("quelle somme voulez vous verser ?");
+            int somme = sc.nextInt();
+            reste = clients.get(temp).getEuro() - somme;
+            clients.get(temp).setEuro(reste);
+            System.out.println("votre compte  contient " + clients.get(temp).getEuro());
+
+        }
     }
     public void virer(){
+        affichedet();
         System.out.println("a quel compte voulez vous virer ? (tappez le num de compte)");
         int vir=sc.nextInt();
         if (vir>=50){
@@ -127,9 +156,13 @@ public class distributeur {
 
 
     }}
-    public void affichedet(int i){
-        System.out.println("nom: "+clients.get(i).getLastname()+" prenom: "+clients.get(i).getFirstname()+" compte euro "+clients.get(i).getEuro()+"euro"+"dollar"+clients.get(i).getDollar()+" $");
+    public void affichedet(){
+        if (temp<51){
+        System.out.println("nom: "+clients.get(temp).getLastname()+" prenom: "+clients.get(temp).getFirstname()+" compte euro "+clients.get(temp).getEuro()+"euro"+"dollar"+clients.get(temp).getDollar()+" $");
+    }else
+
+
+        System.out.println("nom: " + clients.get(temp).getLastname()+ " prenom: " + clients.get(temp).getFirstname() + " compte euro " + clients.get(temp).getEuro() + "euro");}
     }
-}
 
 
